@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 
 namespace TP_CRUD_Repertoire
 {
@@ -18,6 +19,8 @@ namespace TP_CRUD_Repertoire
             while (continuer);
             Console.WriteLine();
             Console.WriteLine("Au revoir");
+            File.WriteAllLines("repertoire.txt", DAL.repertoireActuel);
+            Console.WriteLine("Mise à jour des données ...");
             Console.WriteLine();
         }
 

@@ -11,12 +11,18 @@ namespace TP_CRUD_Repertoire
 
         internal static string[] CreationBase()
         {
-            string[] repertoire = {
-            "Ramon;Robert;0112356497;93160",
-            "Melou;Jeanne;0618976543;77420",
-            "Viale;Christian;0243058976;53250" };
 
-            return repertoire;
+            if (File.Exists("repertoire.txt"))
+            {
+                string[] repertoire = File.ReadAllLines("repertoire.txt");
+                return repertoire;
+            }
+
+            else
+            {
+                string[] repertoire = new string[0];
+                return repertoire;
+            }
         }
 
         internal static void CreerFiche()
