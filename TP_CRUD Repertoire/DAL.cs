@@ -6,6 +6,7 @@ namespace TP_CRUD_Repertoire
 {
     class DAL
     {
+        internal static string[] communes = DomiUtil.RamenerCommune_cp_dep();
 
         internal static string[] repertoireActuel = CreationBase();
 
@@ -33,10 +34,10 @@ namespace TP_CRUD_Repertoire
             Array.Resize(ref DAL.repertoireActuel, DAL.repertoireActuel.Length + 1);
             string newFiche = "";
 
-            Affichage.RemplirFicheText(ref newFiche, "Nom : ", ";");
-            Affichage.RemplirFicheText(ref newFiche, "Prenom : ", ";");
-            Affichage.RemplirFicheNum(ref newFiche, "Téléphone : ", ";");
-            Affichage.RemplirFicheNum(ref newFiche, "Code Postal : ", "");
+            RemplirFicheText(ref newFiche, "Nom : ", ";");
+            RemplirFicheText(ref newFiche, "Prenom : ", ";");
+            RemplirFicheNum(ref newFiche, "Téléphone : ", ";");
+            RemplirFicheNum(ref newFiche, "Code Postal : ", "");
 
             DAL.repertoireActuel[DAL.repertoireActuel.Length - 1] = newFiche;
             Console.WriteLine();
@@ -90,6 +91,17 @@ namespace TP_CRUD_Repertoire
 
         }
 
+        internal static string RechercheDept(string ficheDept)
+        {
+            int indexCommune = Array.FindIndex(communes, x => x.Contains(ficheDept));
+
+            if (indexCommune == -1) ficheDept = "inconnu";
+
+            else ficheDept = communes[indexCommune].Split(';')[2];
+
+            return ficheDept;
+        }
+
         internal static void MAJFiche()
         {
             Console.WriteLine("\t  Mettre a jour une fiche");
@@ -111,14 +123,52 @@ namespace TP_CRUD_Repertoire
             string majFiche = "";
             Console.WriteLine("\t Nouvelles données : ");
 
-            Affichage.RemplirFicheText(ref majFiche, "Nom : ", ";");
-            Affichage.RemplirFicheText(ref majFiche, "Prenom : ", ";");
-            Affichage.RemplirFicheNum(ref majFiche, "Téléphone : ", ";");
-            Affichage.RemplirFicheNum(ref majFiche, "Code postal : ", ";");
+            RemplirFicheText(ref majFiche, "Nom : ", ";");
+            RemplirFicheText(ref majFiche, "Prenom : ", ";");
+            RemplirFicheNum(ref majFiche, "Téléphone : ", ";");
+            RemplirFicheNum(ref majFiche, "Code postal : ", ";");
 
             DAL.repertoireActuel[numero - 1] = majFiche;
             Console.WriteLine();
             Console.WriteLine($"\t**** Fiche numero {numero} mise à jour ****");
+
+        }
+
+        internal static void RemplirFicheNum(ref string newFiche, string message, string separateur)
+        {
+
+            Console.Write(message);
+            string result = Console.ReadLine();
+            long pasUtile;
+
+            while ((!long.TryParse(result, out pasUtile)) || (result.Length > 15))
+            {
+                Affichage.MessageErreur("Uniquement des numéros, 15 chiffres maximum.");
+                Console.Write(message);
+                result = Console.ReadLine();
+            }
+
+            newFiche += result + separateur;
+        }
+
+        internal static void RemplirFicheText(ref string newFiche, string message, string separateur)
+        {
+            string saisie="";
+            bool onlychar=false;
+
+            do
+            {
+                Console.Write(message);
+                saisie = Console.ReadLine();
+                onlychar = true;
+                for (int i = 0; i < saisie.Length; i++)
+                    if (!char.IsLetter(saisie[i])) onlychar = false;
+
+                if ((onlychar == false) || (saisie.Length > 15) || (saisie == "")) Affichage.MessageErreur("Uniquement des lettres, 15 caractères maximum.");
+
+            } while ((!onlychar) || (saisie.Length > 15) || (saisie == ""));
+
+            newFiche += saisie + separateur;
 
         }
 

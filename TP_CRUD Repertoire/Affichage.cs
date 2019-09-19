@@ -71,18 +71,17 @@ namespace TP_CRUD_Repertoire
 
         internal static void AfficherFiches()
         {
-            Console.WriteLine("\t \tListe de toutes les fiches");
-            Console.WriteLine("\t \t--------------------------");
-            Console.WriteLine($"{"N°",5}|{"Nom",-15}|{"Prenom",-15}|{"Téléphone",15}|{"CP",15}");
-            Console.WriteLine("---------------------------------------------------------------------");
+            Console.WriteLine("\t\t\t Liste de toutes les fiches");
+            Console.WriteLine("\t\t\t --------------------------");
+            Console.WriteLine($"{"N°",5}|{"Nom",-15}|{"Prenom",-15}|{"Téléphone",15}|{"CP",10}|{"Departement",19}");
+            Console.WriteLine("------------------------------------------------------------------------------------");
             for (int i = 0; i < DAL.repertoireActuel.Length; i++)
             {
                 string fiche = DAL.repertoireActuel[i];
+                string dept = DAL.RechercheDept(fiche.Split(';')[3]);                         
                 int index = i + 1;
-                Console.WriteLine($"{index,5}|{fiche.Split(';')[0],-15}|{fiche.Split(';')[1],-15}|{fiche.Split(';')[2],15}|{fiche.Split(';')[3],15}");
+                Console.WriteLine($"{index,5}|{fiche.Split(';')[0],-15}|{fiche.Split(';')[1],-15}|{fiche.Split(';')[2],15}|{fiche.Split(';')[3],10}|{dept,20}");
             }
-
-
         }
 
         internal static void AfficherFiches(int [] positions)
@@ -108,45 +107,7 @@ namespace TP_CRUD_Repertoire
             Console.ReadKey();
             Console.Clear();
         }
-
-        internal static void RemplirFicheNum(ref string newFiche, string message, string separateur)
-        {
-
-            Console.Write(message);
-            string result = Console.ReadLine();
-            long pasUtile;
-
-            while ((!long.TryParse(result, out pasUtile)) || (result.Length > 15))
-            {            
-                MessageErreur("Uniquement des numéros, 15 chiffres maximum.");
-                Console.Write(message);
-                result = Console.ReadLine();
-            }
-
-            newFiche += result + separateur;
-        }
-
-        internal static void RemplirFicheText(ref string newFiche, string message, string separateur)
-        {
-            string saisie;
-            bool onlychar = false;
-
-            do
-            {
-                Console.Write(message);
-                saisie = Console.ReadLine();
-                onlychar = true;
-                for (int i = 0; i < saisie.Length; i++)
-                    if (!char.IsLetter(saisie[i])) onlychar = false;
-
-                if ((onlychar == false) || (saisie.Length > 15)) MessageErreur("Uniquement des lettres, 15 caractères maximum.");
-
-            } while ((!onlychar) || (saisie.Length > 15));
-
-            newFiche += saisie + separateur;
-
-        }
-
+               
         internal static void MessageErreur(string erreur)
         {
             Console.ForegroundColor = ConsoleColor.Red;
