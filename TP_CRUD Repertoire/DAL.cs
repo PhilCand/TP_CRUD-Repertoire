@@ -52,7 +52,7 @@ namespace TP_CRUD_Repertoire
             Console.Write("Valeur à rechercher : ");
             String recherche = Console.ReadLine();
 
-            int[] result = repertoireActuel.Select((x, i) => x.Contains(recherche) ? i : -1)
+            int[] result = repertoireActuel.Select((x, i) => x.ToLower().Contains(recherche.ToLower()) ? i : -1)
                           .Where(x => x != -1)
                           .ToArray();
 

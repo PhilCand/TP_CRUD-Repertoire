@@ -111,12 +111,16 @@ namespace TP_CRUD_Repertoire
 
         internal static void RemplirFicheNum(ref string newFiche, string message, string separateur)
         {
+
             Console.Write(message);
-            long result;
-            while ((!long.TryParse(Console.ReadLine(), out result)) || (result.ToString().Length > 15))
-            {
-                    MessageErreur("Uniquement des numéros, 15 chiffres maximum.");
-                    Console.Write(message);
+            string result = Console.ReadLine();
+            long pasUtile;
+
+            while ((!long.TryParse(result, out pasUtile)) || (result.Length > 15))
+            {            
+                MessageErreur("Uniquement des numéros, 15 chiffres maximum.");
+                Console.Write(message);
+                result = Console.ReadLine();
             }
 
             newFiche += result + separateur;
