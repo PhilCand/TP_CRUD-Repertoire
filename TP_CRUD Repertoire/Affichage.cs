@@ -73,31 +73,32 @@ namespace TP_CRUD_Repertoire
         {
             Console.WriteLine("\t \tListe de toutes les fiches");
             Console.WriteLine("\t \t--------------------------");
-            Console.WriteLine($"{"N°",5}|{"Nom",-15}|{"Prenom",-15}|{"Téléphone",15}|{"CP",10}");
-            Console.WriteLine("-----------------------------------------------------------------");
+            Console.WriteLine($"{"N°",5}|{"Nom",-15}|{"Prenom",-15}|{"Téléphone",15}|{"CP",15}");
+            Console.WriteLine("---------------------------------------------------------------------");
             for (int i = 0; i < DAL.repertoireActuel.Length; i++)
             {
                 string fiche = DAL.repertoireActuel[i];
                 int index = i + 1;
-                Console.WriteLine($"{index,5}|{fiche.Split(';')[0],-15}|{fiche.Split(';')[1],-15}|{fiche.Split(';')[2],15}|{fiche.Split(';')[3],10}");
+                Console.WriteLine($"{index,5}|{fiche.Split(';')[0],-15}|{fiche.Split(';')[1],-15}|{fiche.Split(';')[2],15}|{fiche.Split(';')[3],15}");
             }
 
 
         }
 
-        internal static void AfficherFiches(int position)
+        internal static void AfficherFiches(int [] positions)
         {
-            string fiche = DAL.repertoireActuel[position];
-            int index = position + 1;
+
             Console.WriteLine($"{"N°",5}|{"Nom",-15}|{"Prenom",-15}|{"Téléphone",15}|{"CP",10}");
             Console.WriteLine("-----------------------------------------------------------------");
-            Console.WriteLine($"{index,5}|{fiche.Split(';')[0],-15}|{fiche.Split(';')[1],-15}|{fiche.Split(';')[2],15}|{fiche.Split(';')[3],10}");
-        }
 
-        internal static void RemplirFiche(ref string newFiche, string message, string separateur)
-        {
-            Console.Write(message);
-            newFiche += Console.ReadLine() + separateur;
+            foreach (int index in positions)
+            {
+                string fiche = DAL.repertoireActuel[index];
+                int pos = index + 1;
+                Console.WriteLine($"{pos,5}|{fiche.Split(';')[0],-15}|{fiche.Split(';')[1],-15}|{fiche.Split(';')[2],15}|{fiche.Split(';')[3],10}");
+
+            }
+
         }
 
         internal static void PressKey()
@@ -111,11 +112,11 @@ namespace TP_CRUD_Repertoire
         internal static void RemplirFicheNum(ref string newFiche, string message, string separateur)
         {
             Console.Write(message);
-            int result;
-            while (!int.TryParse(Console.ReadLine(), out result))
+            long result;
+            while ((!long.TryParse(Console.ReadLine(), out result)) || (result.ToString().Length > 15))
             {
-                Console.WriteLine("Saisie invalide");
-                Console.Write(message);
+                    MessageErreur("Uniquement des numéros, 15 chiffres maximum.");
+                    Console.Write(message);
             }
 
             newFiche += result + separateur;
@@ -134,13 +135,19 @@ namespace TP_CRUD_Repertoire
                 for (int i = 0; i < saisie.Length; i++)
                     if (!char.IsLetter(saisie[i])) onlychar = false;
 
-                if (onlychar == false) Console.WriteLine("Saisie invalide");
+                if ((onlychar == false) || (saisie.Length > 15)) MessageErreur("Uniquement des lettres, 15 caractères maximum.");
 
-            } while (!onlychar);
+            } while ((!onlychar) || (saisie.Length > 15));
 
             newFiche += saisie + separateur;
 
+        }
 
+        internal static void MessageErreur(string erreur)
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine(erreur);
+            Console.ResetColor();
         }
 
     }

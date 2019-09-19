@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using System.IO;
 
 namespace TP_CRUD_Repertoire
 {
@@ -43,14 +45,13 @@ namespace TP_CRUD_Repertoire
 
             Console.Write("Valeur à rechercher : ");
             String recherche = Console.ReadLine();
-            int index = Array.FindIndex(DAL.repertoireActuel, x => x.Contains(recherche));
-            if (index == -1)
-            {
-                Console.WriteLine();
-                Console.WriteLine("La valeur n'existe pas dans le répertoire.");
-            }
-            else Affichage.AfficherFiches(index);
 
+            int[] result = repertoireActuel.Select((x, i) => x.Contains(recherche) ? i : -1)
+                          .Where(x => x != -1)
+                          .ToArray();
+
+            Affichage.AfficherFiches(result);
+           
         }
 
         internal static void SupprimerFiche()
