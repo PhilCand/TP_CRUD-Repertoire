@@ -90,18 +90,7 @@ namespace TP_CRUD_Repertoire
 
 
         }
-
-        internal static string RechercheDept(string ficheDept)
-        {
-            int indexCommune = Array.FindIndex(communes, x => x.Contains(ficheDept));
-
-            if (indexCommune == -1) ficheDept = "inconnu";
-
-            else ficheDept = communes[indexCommune].Split(';')[2];
-
-            return ficheDept;
-        }
-
+               
         internal static void MAJFiche()
         {
             Console.WriteLine("\t  Mettre a jour une fiche");
@@ -172,6 +161,16 @@ namespace TP_CRUD_Repertoire
 
         }
 
+        internal static string RechercheDept(string ficheDept)
+        {
+            int indexCommune = Array.FindIndex(communes, x => x.Contains(ficheDept));
+
+            if (indexCommune == -1) ficheDept = "inconnu";
+
+            else ficheDept = communes[indexCommune].Split(';')[2];
+
+            return ficheDept;
+        }
     }
 }
 
