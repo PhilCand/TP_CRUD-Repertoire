@@ -37,7 +37,7 @@ namespace TP_CRUD_Repertoire
             RemplirFicheText(ref newFiche, "Nom : ", ";");
             RemplirFicheText(ref newFiche, "Prenom : ", ";");
             RemplirFicheNum(ref newFiche, "Téléphone : ", ";");
-            RemplirFicheNum(ref newFiche, "Code Postal : ", "");
+            RemplirFicheCP(ref newFiche, "Code Postal : ", "");
 
             DAL.repertoireActuel[DAL.repertoireActuel.Length - 1] = newFiche;
             Console.WriteLine();
@@ -121,6 +121,23 @@ namespace TP_CRUD_Repertoire
             Console.WriteLine();
             Console.WriteLine($"\t**** Fiche numero {numero} mise à jour ****");
 
+        }
+
+        internal static void RemplirFicheCP(ref string newFiche, string message, string separateur)
+        {
+
+            Console.Write(message);
+            string result = Console.ReadLine();
+            long pasUtile;
+
+            while ((!long.TryParse(result, out pasUtile)) || (result.Length != 5))
+            {
+                Affichage.MessageErreur("Uniquement des numéros, CP de 5 chiffres.");
+                Console.Write(message);
+                result = Console.ReadLine();
+            }
+
+            newFiche += result + separateur;
         }
 
         internal static void RemplirFicheNum(ref string newFiche, string message, string separateur)
