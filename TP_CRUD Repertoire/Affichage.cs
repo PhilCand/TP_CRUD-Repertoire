@@ -87,14 +87,15 @@ namespace TP_CRUD_Repertoire
         internal static void AfficherFiches(int [] positions)
         {
 
-            Console.WriteLine($"{"N°",5}|{"Nom",-15}|{"Prenom",-15}|{"Téléphone",15}|{"CP",10}");
-            Console.WriteLine("-----------------------------------------------------------------");
+            Console.WriteLine($"{"N°",5}|{"Nom",-15}|{"Prenom",-15}|{"Téléphone",15}|{"CP",10}|{"Departement",19}");
+            Console.WriteLine("------------------------------------------------------------------------------------");
 
             foreach (int index in positions)
             {
                 string fiche = DAL.repertoireActuel[index];
+                string dept = DAL.RechercheDept(fiche.Split(';')[3]);
                 int pos = index + 1;
-                Console.WriteLine($"{pos,5}|{fiche.Split(';')[0],-15}|{fiche.Split(';')[1],-15}|{fiche.Split(';')[2],15}|{fiche.Split(';')[3],10}");
+                Console.WriteLine($"{pos,5}|{fiche.Split(';')[0],-15}|{fiche.Split(';')[1],-15}|{fiche.Split(';')[2],15}|{fiche.Split(';')[3],10}|{dept,20}");
 
             }
 

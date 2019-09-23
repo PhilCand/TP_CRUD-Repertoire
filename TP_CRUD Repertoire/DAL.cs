@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Linq;
 using System.IO;
+using fr.afpa.cdi;
 
 namespace TP_CRUD_Repertoire
 {
     class DAL
     {
-        internal static string[] communes = DomiUtil.RamenerCommune_cp_dep();
 
         internal static string[] repertoireActuel = CreationBase();
-
+        
         internal static string[] CreationBase()
         {
 
@@ -163,13 +163,11 @@ namespace TP_CRUD_Repertoire
 
         internal static string RechercheDept(string ficheDept)
         {
-            int indexCommune = Array.FindIndex(communes, x => x.Contains(ficheDept));
 
-            if (indexCommune == -1) ficheDept = "inconnu";
-
-            else ficheDept = communes[indexCommune].Split(';')[2];
-
-            return ficheDept;
+            string departement;
+            bool deptOK = Utils.getDepartmentFromPostcode(int.Parse(ficheDept), out departement);
+            if (deptOK) return departement;
+            else return "Inconnu";
         }
     }
 }
